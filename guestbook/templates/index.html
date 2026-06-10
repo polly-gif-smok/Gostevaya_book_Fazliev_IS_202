@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Гостевая книга</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -10,14 +9,18 @@
     <div class="container">
         <h1>📖 Гостевая книга</h1>
         
-        <!-- Счётчик сообщений -->
-        <p class="counter">Всего сообщений: {{ total_count }}</p>
+        <!-- Блок авторизации -->
+        <div class="auth-links">
+            {% if logged_in %}
+                Вы вошли как <strong>{{ username }}</strong> |
+                <a href="/logout">🚪 Выйти</a>
+            {% else %}
+                <a href="/login">🔐 Войти</a> (admin / 123)
+            {% endif %}
+        </div>
         
-        <!-- Ссылки сортировки -->
-        <div class="sort-links">
-            <a href="/sort/newest" class="sort-btn">📅 Сначала новые</a>
-            <a href="/sort/oldest" class="sort-btn">📅 Сначала старые</a>
-            <a href="/delete-all" class="delete-all-btn">🗑️ Удалить все</a>
+        <div class="stats">
+            Всего сообщений: {{ total_count }}
         </div>
         
         <!-- Форма добавления сообщения -->
@@ -31,25 +34,23 @@
         </div>
         
         <!-- Список сообщений -->
-        <div class="messages-list">
+        <div class="messages">
             <h2>Сообщения:</h2>
-            {% if messages %}
-                {% for msg in messages %}
-                    <div class="message {% if msg.created_at[:10] == today %}fresh{% endif %}">
-                        <div class="message-header">
-                            <strong>{{ msg.name }}</strong>
-                            <small>({{ msg.created_at[:19].replace('T', ' ') }})</small>
+            {% for msg in messages %}
+                <div class="message">
+                    <div class="message-header">
+                        <strong>{{ msg.name }}</strong>
+                        <small>({{ msg.created_at }})</small>
+                        {% if logged_in %}
                             <a href="/delete/{{ msg.id }}" class="delete-btn" 
-                               onclick="return confirm('Удалить сообщение от {{ msg.name }}?')">Удалить</a>
-                        </div>
-                        <p>{{ msg.message }}</p>
+                               onclick="return confirm('Удалить сообщение?')">🗑️ Удалить</a>
+                        {% endif %}
                     </div>
-                {% endfor %}
-            {% else %}
-                <div class="empty-message">
-                    <p>Пока нет сообщений. Будьте первым! 🎉</p>
+                    <p>{{ msg.message }}</p>
                 </div>
-            {% endif %}
+            {% else %}
+                <p>Пока нет сообщений. Будьте первым!</p>
+            {% endfor %}
         </div>
     </div>
 </body>

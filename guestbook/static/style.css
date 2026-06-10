@@ -15,221 +15,188 @@ body {
     max-width: 800px;
     margin: 0 auto;
     background: white;
-    border-radius: 15px;
+    border-radius: 10px;
     padding: 30px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 h1 {
     color: #333;
+    margin-bottom: 20px;
     text-align: center;
+}
+
+/* Блок авторизации */
+.auth-links {
+    text-align: right;
     margin-bottom: 20px;
-}
-
-h2 {
-    color: #555;
-    margin-bottom: 15px;
-    font-size: 1.3em;
-}
-
-/* Счётчик */
-.counter {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 12px;
-    border-radius: 10px;
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: bold;
-    font-size: 1.1em;
-}
-
-/* Ссылки сортировки */
-.sort-links {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    justify-content: center;
-}
-
-.sort-btn, .delete-all-btn {
-    padding: 8px 15px;
-    background: #f0f0f0;
-    color: #333;
-    text-decoration: none;
+    padding: 10px;
+    background: #f8f9fa;
     border-radius: 5px;
-    transition: all 0.3s;
 }
 
-.sort-btn:hover {
-    background: #667eea;
-    color: white;
+.auth-links a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: bold;
 }
 
-.delete-all-btn:hover {
-    background: #dc3545;
-    color: white;
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
+.stats {
+    background: #e7f3ff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #0066cc;
 }
 
 /* Форма добавления */
 .add-message {
-    background: #f8f9fa;
+    background: #f9f9f9;
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 30px;
 }
 
-input, textarea {
+.add-message h2 {
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+input[type="text"],
+textarea {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    font-family: inherit;
+    font-size: 14px;
 }
 
 button {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #667eea;
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 1em;
-    transition: transform 0.2s;
+    font-size: 14px;
 }
 
 button:hover {
-    transform: translateY(-2px);
+    background: #5a67d8;
 }
 
 /* Сообщения */
-.messages-list {
-    margin-top: 20px;
+.messages h2 {
+    margin-bottom: 15px;
+    font-size: 1.3em;
 }
 
 .message {
-    background: white;
     border: 1px solid #e0e0e0;
-    border-radius: 10px;
     padding: 15px;
     margin-bottom: 15px;
-    transition: box-shadow 0.3s;
-}
-
-.message:hover {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    background: #fafafa;
 }
 
 .message-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 10px;
-    flex-wrap: wrap;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #e0e0e0;
 }
 
-.message strong {
+.message-header strong {
     color: #667eea;
-    font-size: 1.1em;
 }
 
-.message small {
+.message-header small {
     color: #999;
-    font-size: 0.85em;
+    margin-left: 10px;
+}
+
+.delete-btn {
+    float: right;
+    color: #dc3545;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+.delete-btn:hover {
+    color: #c82333;
 }
 
 .message p {
     color: #555;
     line-height: 1.5;
-    margin-top: 10px;
 }
 
-/* Кнопка удаления */
-.delete-btn {
-    color: #dc3545;
-    text-decoration: none;
-    font-size: 0.9em;
-    padding: 3px 8px;
-    border-radius: 3px;
-    transition: background 0.3s;
+/* Форма входа */
+.login-form {
+    max-width: 400px;
+    margin: 20px auto;
 }
 
-.delete-btn:hover {
-    background: #dc3545;
-    color: white;
-}
-
-/* Свежие сообщения */
-.fresh {
-    background-color: #fff3cd;
-    border-left: 4px solid #ffc107;
-}
-
-/* Пустое состояние */
-.empty-message {
-    text-align: center;
-    padding: 40px;
-    color: #999;
-    font-size: 1.1em;
-}
-
-/* Окно подтверждения удаления всех */
-.confirm-box {
-    text-align: center;
-    padding: 20px;
-}
-
-.confirm-box h1 {
-    color: #dc3545;
+.form-group {
     margin-bottom: 20px;
 }
 
-.confirm-box p {
-    color: #666;
-    margin-bottom: 30px;
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
 }
 
-.confirm-yes {
-    background: #dc3545;
-    margin-right: 10px;
-}
-
-.confirm-no {
-    display: inline-block;
-    background: #6c757d;
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #e0e0e0;
     border-radius: 5px;
-    transition: background 0.3s;
+    font-size: 16px;
 }
 
-.confirm-yes:hover {
-    background: #c82333;
+.form-group input:focus {
+    outline: none;
+    border-color: #667eea;
 }
 
-.confirm-no:hover {
-    background: #5a6268;
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
 }
 
-/* Адаптивность */
-@media (max-width: 600px) {
-    .container {
-        padding: 15px;
-    }
-    
-    .message-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-    
-    .sort-links {
-        flex-direction: column;
-    }
-    
-    .sort-btn, .delete-all-btn {
-        text-align: center;
-    }
+.btn-login:hover {
+    background: #5a67d8;
+}
+
+.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Ссылка назад */
+p a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
 }

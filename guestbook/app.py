@@ -1,70 +1,69 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, session
 from database import (
     init_db, get_all_messages, add_message, delete_message, 
-    get_message_count, delete_all_messages, get_messages_sorted
+    get_message_count, check_user
 )
-from datetime import date
 
 app = Flask(__name__)
+app.secret_key = 'секретный_ключ_для_гостевой_книги_12345'
 
-# Инициализируем базу данных при запуске
+# Инициализируем базу данных
 init_db()
 
 @app.route('/')
 def index():
-    """Главная страница со всеми сообщениями."""
     messages = get_all_messages()
     total_count = get_message_count()
-    today = date.today().isoformat()
-    return render_template('index.html', 
-                         messages=messages, 
-                         total_count=total_count,
-                         today=today)
+    
+    return render_template(
+        'index.html',
+        messages=messages,
+        total_count=total_count,
+        logged_in=session.get('logged_in', False),
+        username=session.get('username')
+    )
 
 @app.route('/add', methods=['POST'])
 def add():
-    """Добавляет новое сообщение."""
-    name = request.form.get('name')
-    message = request.form.get('message')
+    name = request.form.get('name', '').strip()
+    message = request.form.get('message', '').strip()
     
     if name and message:
         add_message(name, message)
     
-    return redirect(url_for('index'))
+    return redirect('/')
 
 @app.route('/delete/<int:message_id>')
 def delete(message_id):
-    """Удаляет сообщение по id."""
-    delete_message(message_id)
-    return redirect(url_for('index'))
-
-@app.route('/delete-all')
-def delete_all_page():
-    """Показывает страницу подтверждения удаления всех сообщений."""
-    return render_template('delete_all.html')
-
-@app.route('/delete-all-confirm', methods=['POST'])
-def delete_all_confirm():
-    """Удаляет все сообщения."""
-    delete_all_messages()
-    return redirect(url_for('index'))
-
-@app.route('/sort/<order>')
-def sort_messages(order):
-    """Сортирует сообщения по дате."""
-    if order == 'newest':
-        messages = get_messages_sorted('DESC')
-    elif order == 'oldest':
-        messages = get_messages_sorted('ASC')
-    else:
-        messages = get_all_messages()
+    # Защита удаления - только для авторизованных
+    if not session.get('logged_in'):
+        return redirect('/login')
     
-    total_count = get_message_count()
-    today = date.today().isoformat()
-    return render_template('index.html', 
-                         messages=messages, 
-                         total_count=total_count,
-                         today=today)
+    delete_message(message_id)
+    return redirect('/')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    
+    if request.method == 'POST':
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
+        
+        if check_user(username, password):
+            session['logged_in'] = True
+            session['username'] = username
+            return redirect('/')
+        else:
+            error = 'Неверный логин или пароль'
+    
+    return render_template('login.html', error=error)
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    session.pop('username', None)
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)
