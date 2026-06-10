@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гостевая книга</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>📖 Гостевая книга</h1>
+        
+        <!-- Счётчик сообщений -->
+        <p class="counter">Всего сообщений: {{ total_count }}</p>
+        
+        <!-- Ссылки сортировки -->
+        <div class="sort-links">
+            <a href="/sort/newest" class="sort-btn">📅 Сначала новые</a>
+            <a href="/sort/oldest" class="sort-btn">📅 Сначала старые</a>
+            <a href="/delete-all" class="delete-all-btn">🗑️ Удалить все</a>
+        </div>
+        
+        <!-- Форма добавления сообщения -->
+        <div class="add-message">
+            <h2>Добавить сообщение</h2>
+            <form method="POST" action="/add">
+                <input type="text" name="name" placeholder="Ваше имя" required>
+                <textarea name="message" placeholder="Ваше сообщение" rows="3" required></textarea>
+                <button type="submit">Отправить</button>
+            </form>
+        </div>
+        
+        <!-- Список сообщений -->
+        <div class="messages-list">
+            <h2>Сообщения:</h2>
+            {% if messages %}
+                {% for msg in messages %}
+                    <div class="message {% if msg.created_at[:10] == today %}fresh{% endif %}">
+                        <div class="message-header">
+                            <strong>{{ msg.name }}</strong>
+                            <small>({{ msg.created_at[:19].replace('T', ' ') }})</small>
+                            <a href="/delete/{{ msg.id }}" class="delete-btn" 
+                               onclick="return confirm('Удалить сообщение от {{ msg.name }}?')">Удалить</a>
+                        </div>
+                        <p>{{ msg.message }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-message">
+                    <p>Пока нет сообщений. Будьте первым! 🎉</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
